@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Entity
 @Data
@@ -35,13 +35,14 @@ public class Medecin {
     @Column(nullable = false)
     private String telephone;
 
+    // Stockage des fichiers en base de données sous forme de byte[]
     @Lob
-    @Column(name = "photo")
+    @Column(name = "photo" , columnDefinition = "LONGBLOB")
     private byte[] photo;
 
     @Lob
-    @Column(name = "justificatifs")
-    private byte [] justificatifs;
+    @Column(name = "justificatifs", columnDefinition = "LONGBLOB")
+    private byte[] justificatifs;
 
 
 }
