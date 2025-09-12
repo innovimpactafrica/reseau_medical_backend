@@ -1,7 +1,16 @@
 package com.example.rml.back_office_rml.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.sql.Time;
+import java.time.LocalDateTime;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 public class CentreSante {
 
@@ -14,16 +23,20 @@ public class CentreSante {
     private Utilisateur utilisateur;
 
     @Column(nullable = false)
-    private String nom;
+    private String nomCentre;
+
 
     @Column(columnDefinition = "TEXT")
-    private String adresse;
+    private String adresseCentre;
 
-    @Column(name = "email_contact")
-    private String emailContact;
+    @Column (nullable = false)
+    private String horaireOuverture;
+
+    @Column(nullable = false)
+    private String nomReferent;
 
     @Column(name = "telephone_contact")
-    private String telephoneContact;
+    private String telephoneReferent;
 
 
 }

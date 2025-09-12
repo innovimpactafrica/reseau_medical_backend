@@ -5,6 +5,7 @@ import com.example.rml.back_office_rml.enums.RoleUtilisateur;
 import com.example.rml.back_office_rml.enums.StatutUtilisateur;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,10 +14,14 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Utilisateur {
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id_utilisateur;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_utilisateur") // nom en base de données
+    private Long idUtilisateur; // nom en Java
+
 
     @Column(unique = true, nullable = false)
     private String email;
