@@ -35,7 +35,7 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
 
         // 1. Vérifier si l'email existe déjà
         if (emailExists(registerHealthCenterDTO.getEmail())) {
-            throw new RuntimeException("Un utilisateur avec cet email existe déjà : " + registerHealthCenterDTO.getEmail());
+            throw new RuntimeException("A user with this email already exists : " + registerHealthCenterDTO.getEmail());
         }
 
         // 2. Créer l'utilisateur de base

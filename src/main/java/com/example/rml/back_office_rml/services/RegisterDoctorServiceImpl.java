@@ -36,7 +36,7 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
 
         // 1. Vérifier si l'email existe déjà
         if (emailExists(dto.getEmail())) {
-            throw new RuntimeException("Un utilisateur avec cet email existe déjà : " + dto.getEmail());
+            throw new RuntimeException("A user with this email already exists: " + dto.getEmail());
         }
 
         // 2. Créer l'utilisateur de base
