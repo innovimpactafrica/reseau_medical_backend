@@ -1,13 +1,13 @@
 package com.example.rml.back_office_rml.repositories;
 
-import com.example.rml.back_office_rml.entities.Utilisateur;
+import com.example.rml.back_office_rml.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UtilisateurRepository extends JpaRepository <Utilisateur, Long> {
+public interface UserRepository extends JpaRepository<Users, Long> {
 
-    Optional<Utilisateur> findByEmail(String email);
+    Optional<Users> findByEmail(String email);
 }
