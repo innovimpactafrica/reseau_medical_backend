@@ -9,8 +9,8 @@ import com.example.rml.back_office_rml.repositories.HealthCenterRepository;
 import com.example.rml.back_office_rml.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
+
 
 
 @Service
@@ -27,8 +27,6 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
     public boolean emailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
-
-
 
     @Override
     public RegisterHealthCenterDTO registerHealthCenter(RegisterHealthCenterDTO registerHealthCenterDTO) throws IOException {
@@ -60,14 +58,13 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
         if (registerHealthCenterDTO.getLogo() != null && !registerHealthCenterDTO.getLogo().isEmpty()) {
             healthCenter.setLogo(registerHealthCenterDTO.getLogo().getBytes());
         }
-        if(registerHealthCenterDTO.getDocuments() != null && !registerHealthCenterDTO.getDocuments().isEmpty()) {
+        if (registerHealthCenterDTO.getDocuments() != null && !registerHealthCenterDTO.getDocuments().isEmpty()) {
             healthCenter.setDocuments(registerHealthCenterDTO.getDocuments().getBytes());
         }
 
-        HealthCenter savedHealthCenter =  healthCenterRepository.save(healthCenter);
+        HealthCenter savedHealthCenter = healthCenterRepository.save(healthCenter);
 
         //4. La réponse
-
         RegisterHealthCenterDTO response = new RegisterHealthCenterDTO();
         response.setHealthCenterName(savedHealthCenter.getName());
         response.setHealthCenterAddress(savedHealthCenter.getAddress());
@@ -84,6 +81,5 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
 
         return response;
     }
-
 
 }

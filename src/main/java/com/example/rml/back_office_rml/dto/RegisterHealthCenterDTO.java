@@ -24,10 +24,10 @@ public class RegisterHealthCenterDTO {
 
     @NotBlank
     @Size(min = 8)
-    private String password; // password
+    private String password;// password
 
     @NotNull
-    private UserRole role; // role
+    private UserRole role;// role
 
     // Specific information for HEALTH CENTER
     @NotBlank(message = "The health center name is required")
