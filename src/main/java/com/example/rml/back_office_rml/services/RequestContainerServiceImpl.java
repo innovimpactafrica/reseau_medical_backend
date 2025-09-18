@@ -3,14 +3,17 @@ package com.example.rml.back_office_rml.services;
 import com.example.rml.back_office_rml.dto.RequestContainerDto;
 import com.example.rml.back_office_rml.dto.RequestDoctorDTO;
 import com.example.rml.back_office_rml.dto.RequestHealthCenterDTO;
+import com.example.rml.back_office_rml.dto.RequestStatsDTO;
 import com.example.rml.back_office_rml.entities.Doctor;
 import com.example.rml.back_office_rml.entities.HealthCenter;
 import com.example.rml.back_office_rml.entities.Users;
 import com.example.rml.back_office_rml.enums.UserRole;
+import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,11 @@ public class RequestContainerServiceImpl implements RequestContainerService {
 
     @Autowired
     private UserRepository userRepository;
+
+
+  private static final List <UserRole> REQUEST_ROLES = Arrays.asList(
+          UserRole.DOCTOR , UserRole.HEALTH_CENTER);
+
 
     @Override
     public List<RequestContainerDto> listAllRequests() {
@@ -49,6 +57,126 @@ public class RequestContainerServiceImpl implements RequestContainerService {
                 .map(this::convertToHealthCenterDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<RequestContainerDto> listRequestsByStatus(UserStatus status) {
+        List<Users> usersList = userRepository.findByStatus(status);
+        return usersList.stream()
+                .map(this::convertToRequestDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RequestContainerDto> listRequestsByRoleAndStatus(UserRole role, UserStatus status) {
+        List<Users> usersByRoleAndStatus = userRepository.findByRoleAndStatus(role, status);
+        return usersByRoleAndStatus.stream()
+                .map(this::convertToRequestDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RequestDoctorDTO> listDoctorRequestsByStatus(UserStatus status) {
+        // Récupère tous les utilisateurs qui sont des médecins et qui ont le statut demandé
+        List<Users> doctorsByStatus = userRepository.findByRoleAndStatus(UserRole.DOCTOR, status);
+
+        // Convertit la liste Users en liste RequestDoctorDTO
+        return doctorsByStatus.stream()
+                .map(this::convertToDoctorRequestDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RequestHealthCenterDTO> listHealthCenterRequestsByStatus(UserStatus status) {
+        // Récupère tous les utilisateurs qui sont des centres de santé et qui ont le statut demandé
+        List<Users> centersByStatus = userRepository.findByRoleAndStatus(UserRole.HEALTH_CENTER, status);
+
+        // Convertit la liste Users en liste RequestHealthCenterDTO
+        return centersByStatus.stream()
+                .map(this::convertToHealthCenterDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public RequestStatsDTO getRegistrationRequestStats() {
+
+        RequestStatsDTO stats = new RequestStatsDTO();
+
+        // Totaux globaux (DOCTOR + HEALTH_CENTER)
+        stats.setTotalRequests(userRepository.countByRoleIn(REQUEST_ROLES));
+        stats.setTotalPending(userRepository.countByRoleInAndStatus(REQUEST_ROLES, UserStatus.PENDING));
+        stats.setTotalApproved(userRepository.countByRoleInAndStatus(REQUEST_ROLES, UserStatus.APPROVED));
+        stats.setTotalRefused(userRepository.countByRoleInAndStatus(REQUEST_ROLES, UserStatus.REFUSED));
+
+        // Statistiques spécifiques aux médecins
+        stats.setTotalDoctorRequests(userRepository.countByRole(UserRole.DOCTOR));
+        stats.setTotalDoctorPending(userRepository.countByRoleAndStatus(UserRole.DOCTOR, UserStatus.PENDING));
+        stats.setTotalDoctorApproved(userRepository.countByRoleAndStatus(UserRole.DOCTOR, UserStatus.APPROVED));
+        stats.setTotalDoctorRefused(userRepository.countByRoleAndStatus(UserRole.DOCTOR, UserStatus.REFUSED));
+
+        // Statistiques spécifiques aux centres de santé
+        stats.setTotalHealthCenterRequests(userRepository.countByRole(UserRole.HEALTH_CENTER));
+        stats.setTotalHealthCenterPending(userRepository.countByRoleAndStatus(UserRole.HEALTH_CENTER, UserStatus.PENDING));
+        stats.setTotalHealthCenterApproved(userRepository.countByRoleAndStatus(UserRole.HEALTH_CENTER, UserStatus.APPROVED));
+        stats.setTotalHealthCenterRefused(userRepository.countByRoleAndStatus(UserRole.HEALTH_CENTER, UserStatus.REFUSED));
+
+        return stats;
+    }
+
+    @Override
+    public RequestContainerDto approveRequest(Long userId) {
+        // On approuve la demande en appelant la méthode générique
+        return changeRequestStatus(userId, UserStatus.APPROVED);
+
+    }
+
+    @Override
+    public RequestContainerDto refuseRequest(Long userId) {
+        // On refuse la demande en appelant la méthode générique
+        return changeRequestStatus(userId, UserStatus.REFUSED);
+    }
+
+    @Override
+    public RequestContainerDto changeRequestStatus(Long userId, UserStatus newStatus) {
+        // Vérifier que l'utilisateur existe
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        //Vérifier que l'utilisateur a un rôle valide (DOCTOR ou HEALTH_CENTER)
+        if (user.getRole() != UserRole.DOCTOR && user.getRole() != UserRole.HEALTH_CENTER) {
+            throw new RuntimeException("Impossible : rôle non autorisé pour cette opération");
+        }
+
+        // Vérifier que le statut actuel permet le changement
+        if (!canChangeStatus(user.getStatus(), newStatus)) {
+            throw new RuntimeException("Impossible de changer le statut : la demande n'est pas en PENDING");
+        }
+
+        //Appliquer le nouveau statut
+        user.setStatus(newStatus);
+        Users savedUser = userRepository.save(user);
+
+        // Retourner le DTO mis à jour
+        return convertToRequestDto(savedUser);
+    }
+
+    /**
+     * Vérifie si le changement de statut est autorisé
+     *
+     * @param currentStatus statut actuel
+     * @param newStatus nouveau statut demandé
+     * @return true si le changement est autorisé
+     */
+    private boolean canChangeStatus(UserStatus currentStatus, UserStatus newStatus) {
+        // Pour approuver ou refuser : le statut doit être PENDING
+        if (newStatus == UserStatus.APPROVED || newStatus == UserStatus.REFUSED) {
+            return currentStatus == UserStatus.PENDING;
+        }
+
+        // Pour d'autres changements de statut, on peut être plus flexible
+        // (par exemple, passer de APPROVED à ACTIVE, etc.)
+        return true;
+    }
+
 
     // Conversion d'un utilisateur vers RequestContainerDto
     private RequestContainerDto convertToRequestDto(Users user) {
