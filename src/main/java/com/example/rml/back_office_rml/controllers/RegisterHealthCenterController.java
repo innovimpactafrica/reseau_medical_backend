@@ -4,7 +4,6 @@ import com.example.rml.back_office_rml.dto.RegisterHealthCenterDTO;
 import com.example.rml.back_office_rml.services.RegisterHealthCenterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +15,12 @@ import jakarta.validation.constraints.NotBlank;
 @RequestMapping("/api/healthcenter")
 public class RegisterHealthCenterController {
 
-    @Autowired
-    private RegisterHealthCenterService registerHealthCenterService;
+
+    private final RegisterHealthCenterService registerHealthCenterService;
+
+    public RegisterHealthCenterController (RegisterHealthCenterService registerHealthCenterService){
+        this.registerHealthCenterService = registerHealthCenterService;
+    }
 
     @Operation(summary = "Register a new health center")
     @PostMapping(consumes = "multipart/form-data")

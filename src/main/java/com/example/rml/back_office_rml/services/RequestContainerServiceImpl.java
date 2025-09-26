@@ -10,7 +10,6 @@ import com.example.rml.back_office_rml.entities.Users;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -20,8 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class RequestContainerServiceImpl implements RequestContainerService {
 
-    @Autowired
-    private UserRepository userRepository;
+
+    private final  UserRepository userRepository;
+
+    public RequestContainerServiceImpl (UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
 
   private static final List <UserRole> REQUEST_ROLES = Arrays.asList(
@@ -93,7 +96,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
         // Convertit la liste Users en liste RequestHealthCenterDTO
         return centersByStatus.stream()
                 .map(this::convertToHealthCenterDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

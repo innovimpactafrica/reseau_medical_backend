@@ -1,10 +1,13 @@
 package com.example.rml.back_office_rml.enums;
 
+import lombok.Getter;
+
 // Enum pour représenter les différentes spécialités médicales
+@Getter
 public enum MedicalSpecialty {
 
     GENERAL_MEDICINE("Médecine Générale"),
-    CARDIOLOGY("Cardiologie"),
+    Cardiology("Cardiologie"),
     DERMATOLOGY("Dermatologie"),
     PEDIATRICS("Pédiatrie"),
     GYNECOLOGY("Gynécologie"),
@@ -34,13 +37,11 @@ public enum MedicalSpecialty {
     EMERGENCY_MEDICINE("Médecine d’Urgence"),
     OTHER("Autre"); // Spécialité générique
 
+    // getter pour récupérer le libellé
     private final String label; // libellé
 
     MedicalSpecialty(String label) {
         this.label = label;
     }
 
-    public String getLabel() {
-        return label; // getter pour récupérer le libellé
-    }
 }

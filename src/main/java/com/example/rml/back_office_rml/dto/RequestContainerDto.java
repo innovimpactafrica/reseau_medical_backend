@@ -3,6 +3,7 @@ package com.example.rml.back_office_rml.dto;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.enums.MedicalSpecialty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -12,6 +13,7 @@ public class RequestContainerDto {
     private String email;
     private UserRole role;
     private UserStatus status;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime creationDate;
 
     // Informations spécifiques au médecin (nullable si c'est un centre de santé)

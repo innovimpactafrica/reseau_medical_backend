@@ -7,7 +7,6 @@ import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.repositories.HealthCenterRepository;
 import com.example.rml.back_office_rml.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 
@@ -16,11 +15,13 @@ import java.io.IOException;
 @Service
 public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterService {
 
-    @Autowired
-    private HealthCenterRepository healthCenterRepository;
+    private final HealthCenterRepository healthCenterRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    public RegisterHealthCenterServiceImpl  (HealthCenterRepository healthCenterRepository, UserRepository userRepository){
+        this.healthCenterRepository = healthCenterRepository;
+        this.userRepository = userRepository;
+    }
 
 
     @Override

@@ -2,6 +2,7 @@ package com.example.rml.back_office_rml.entities;
 
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class Users { // Classe Utilisateur
     private UserStatus status; // StatutUtilisateur
 
     @CreationTimestamp
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(name = "date_creation", nullable = false, updatable = false)
     private LocalDateTime creationDate; // dateCreation
 
@@ -50,7 +52,6 @@ public class Users { // Classe Utilisateur
     public String getPassword() {
         return ""; //
     }
-
 
 
 }

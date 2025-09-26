@@ -5,7 +5,6 @@ import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.services.RegisterDoctorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +16,12 @@ import jakarta.validation.constraints.NotBlank;
 @RequestMapping("api/doctor")
 public class RegisterDoctorController {
 
-    @Autowired
-    private RegisterDoctorService registerDoctorService;
+
+    private final RegisterDoctorService registerDoctorService;
+
+    public RegisterDoctorController (RegisterDoctorService registerDoctorService){
+        this.registerDoctorService = registerDoctorService;
+    }
 
     @Operation(summary = "Register a new doctor")
     @PostMapping(consumes = "multipart/form-data")

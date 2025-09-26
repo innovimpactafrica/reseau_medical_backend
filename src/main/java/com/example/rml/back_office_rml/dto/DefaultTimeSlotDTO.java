@@ -1,3 +1,5 @@
+package com.example.rml.back_office_rml.dto;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +13,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class DefaultTimeSlotDTO {
 
-    private Long defaultSlotId;
 
     @NotNull(message = "Start time is required")
     @JsonFormat(pattern = "HH:mm")
@@ -21,3 +22,4 @@ public class DefaultTimeSlotDTO {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 }
+

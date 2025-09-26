@@ -8,10 +8,8 @@ import com.example.rml.back_office_rml.dto.RequestStatsDTO;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.services.RequestContainerService;
-import com.example.rml.back_office_rml.services.RequestContainerServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +19,12 @@ import java.util.List;
 @RequestMapping("/api/requests")
 public class RequestContainerController {
 
-    @Autowired
-    private RequestContainerService requestContainerService;
-    @Autowired
-    private RequestContainerServiceImpl requestContainerServiceImpl;
+
+    private final RequestContainerService requestContainerService;
+
+    public RequestContainerController (RequestContainerService requestContainerService ){
+        this.requestContainerService =requestContainerService;
+    }
 
     /**
      * Récupère toutes les demandes (médecins et centres de santé)
@@ -146,7 +146,7 @@ public class RequestContainerController {
     )
     public ResponseEntity<RequestStatsDTO> getRequestStatistics() {
         try {
-            RequestStatsDTO stats = requestContainerServiceImpl.getRegistrationRequestStats();
+            RequestStatsDTO stats = requestContainerService.getRegistrationRequestStats();
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();

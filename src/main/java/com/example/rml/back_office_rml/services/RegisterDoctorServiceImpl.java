@@ -17,11 +17,14 @@ import java.io.IOException;
 @Service
 public class RegisterDoctorServiceImpl implements RegisterDoctorService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private DoctorRepository doctorRepository;
+    private final DoctorRepository doctorRepository;
+
+    public RegisterDoctorServiceImpl (UserRepository userRepository , DoctorRepository doctorRepository){
+        this.doctorRepository = doctorRepository;
+        this.userRepository = userRepository;
+    }
 
 
     @Override
