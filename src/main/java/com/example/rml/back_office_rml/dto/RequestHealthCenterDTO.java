@@ -1,12 +1,14 @@
 package com.example.rml.back_office_rml.dto;
 
 import com.example.rml.back_office_rml.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
 public class RequestHealthCenterDTO {
+
 
     private Long userId; // ID de l'utilisateur lié au centre
     private Long centerId; // ID spécifique du centre
@@ -20,7 +22,8 @@ public class RequestHealthCenterDTO {
     private String contactPhone;  // Téléphone de la personne de contact
 
     private UserStatus status; // Statut de la demande
-    private LocalDateTime creationDate; // Date de création de la demande
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime dateOfRequest; // dateCreation
 
     private boolean hasLogo; // Indique si le centre a un logo enregistré
     private boolean hasCenterDocuments; // Indique si des documents sont associés au centre

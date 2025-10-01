@@ -49,6 +49,7 @@ public class RegisterHealthCenterDTO {
     @Schema(hidden = true)
     private UserStatus status;
 
+
     // Lors du retour du DTO HealthCenter les fichiers ne sont pas affichés car les données en byte ne sont pas converties en Multipart. On utilise à la place des indicateurs de présence.
     @JsonIgnore
     private MultipartFile logo;

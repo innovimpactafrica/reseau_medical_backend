@@ -1,8 +1,10 @@
 package com.example.rml.back_office_rml.services;
 
 import com.example.rml.back_office_rml.dto.RegisterDoctorDTO;
+import com.example.rml.back_office_rml.dto.RequestDoctorDTO;
 import com.example.rml.back_office_rml.entities.Users;
 import com.example.rml.back_office_rml.entities.Doctor;
+import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.example.rml.back_office_rml.repositories.UserRepository;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class RegisterDoctorServiceImpl implements RegisterDoctorService {
@@ -83,4 +86,30 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
         response.setStatus(savedUser.getStatus());
         return response;
     }
+
+    @Override
+    public List<RequestDoctorDTO> getDoctorsBySpecialty(MedicalSpecialty medicalSpecialty) {
+
+        List<Doctor> doctorList = doctorRepository.findBySpecialty(medicalSpecialty);
+
+        return doctorList.stream()
+                .map(this::convertToDoctorDTO)
+                .toList();
+    }
+
+    RequestDoctorDTO convertToDoctorDTO (Doctor doctor){
+        RequestDoctorDTO dto = new RequestDoctorDTO();
+        dto.setFirstName(doctor.getFirstName());
+        dto.setLastName(doctor.getLastName());
+        dto.setSpecialty(doctor.getSpecialty());
+        dto.setEmail(doctor.getUser().getEmail());
+        dto.setPhone(doctor.getPhone());
+        dto.setHasPhoto(doctor.getPhoto() != null);
+        dto.setHasDocuments(doctor.getDocuments() != null);
+        dto.setDateOfRequest(doctor.getUser().getCreationDate());
+        dto.setStatus(doctor.getUser().getStatus());
+        return dto;
+    }
+
+
 }

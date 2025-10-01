@@ -323,6 +323,23 @@ public class RoomController {
         }
     }
 
+    @Operation(
+            summary = "Get rooms by status",
+            description = "Retrieve the list of rooms filtered by their current status"
+    )
+    @GetMapping("/status")
+    public ResponseEntity<?> getRoomsByStatus(
+            @Parameter(description = "Room status ")
+            @RequestParam RoomStatus status) {
+        try {
+            List<RoomDTO> roomDTOList = roomService.getRoomsByStatus(status);
+            return ResponseEntity.ok(roomDTOList);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Error: " + e.getMessage());
+        }
+    }
+
     // ============================================================================
     // 🔧 ENDPOINTS DE GESTION DES CRÉNEAUX HORAIRES
     // ============================================================================
@@ -406,6 +423,7 @@ public class RoomController {
                             "Erreur lors de la suppression : " + e.getMessage()));
         }
     }
+
 
     // ============================================================================
     // 🔧 MÉTHODES UTILITAIRES PRIVÉES

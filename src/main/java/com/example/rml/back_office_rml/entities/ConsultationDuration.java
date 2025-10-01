@@ -1,6 +1,14 @@
+package com.example.rml.back_office_rml.entities;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Table(name = "consultation_durations")
 public class ConsultationDuration {
 
@@ -17,5 +25,4 @@ public class ConsultationDuration {
     @Column(nullable = false)
     private Boolean active = true;     // Pour désactiver certaines durées
 
-    // Constructeurs, getters, setters
 }

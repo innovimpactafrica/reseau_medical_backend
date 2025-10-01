@@ -184,6 +184,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     // ====================================================================
+    // 📋 RÉCUPÉRATION DES SALLES PAR  STATUTS
+    // ====================================================================
+
+    @Override
+    public List<RoomDTO> getRoomsByStatus(RoomStatus status) {
+        List <Room> roomList = roomRepository.findByStatus(status);
+        return roomList.stream()
+                .map(this::convertToDTO).toList();
+    }
+
+
+    // ====================================================================
     // 🗑️ SUPPRESSION D'UNE SALLE
     // ====================================================================
     @Override

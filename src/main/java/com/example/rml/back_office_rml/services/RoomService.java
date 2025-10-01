@@ -42,5 +42,9 @@ public interface RoomService {
     // Changer le statut d'une salle
     RoomDTO updateRoomStatus(Long roomId, RoomStatus status);
 
+    //Trouver une salle par son id
     RoomDTO getRoomById(Long roomId);
+
+    //Lister les salles par statut
+    List <RoomDTO> getRoomsByStatus(RoomStatus status);
 }

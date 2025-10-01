@@ -4,6 +4,7 @@ import com.example.rml.back_office_rml.dto.RequestContainerDto;
 import com.example.rml.back_office_rml.dto.RequestDoctorDTO;
 import com.example.rml.back_office_rml.dto.RequestHealthCenterDTO;
 import com.example.rml.back_office_rml.dto.RequestStatsDTO;
+import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
 
@@ -86,5 +87,7 @@ public interface RequestContainerService {
      *         ou si le changement de statut n'est pas valide
      */
     RequestContainerDto changeRequestStatus(Long userId, UserStatus newStatus);
+
+
 
 }

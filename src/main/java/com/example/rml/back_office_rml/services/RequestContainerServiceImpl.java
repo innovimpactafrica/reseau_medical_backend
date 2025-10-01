@@ -7,8 +7,10 @@ import com.example.rml.back_office_rml.dto.RequestStatsDTO;
 import com.example.rml.back_office_rml.entities.Doctor;
 import com.example.rml.back_office_rml.entities.HealthCenter;
 import com.example.rml.back_office_rml.entities.Users;
+import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
+import com.example.rml.back_office_rml.repositories.DoctorRepository;
 import com.example.rml.back_office_rml.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,11 @@ public class RequestContainerServiceImpl implements RequestContainerService {
 
 
     private final  UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
 
-    public RequestContainerServiceImpl (UserRepository userRepository){
+    public RequestContainerServiceImpl (UserRepository userRepository, DoctorRepository doctorRepository){
         this.userRepository = userRepository;
+        this.doctorRepository = doctorRepository;
     }
 
 
@@ -162,6 +166,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
         return convertToRequestDto(savedUser);
     }
 
+
     /**
      * Vérifie si le changement de statut est autorisé
      *
@@ -225,7 +230,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
         dto.setUserId(user.getUserId());
         dto.setEmail(user.getEmail());
         dto.setStatus(user.getStatus());
-        dto.setCreationDate(user.getCreationDate());
+        dto.setDateOfRequest(user.getCreationDate());
 
         // Vérifie si l'utilisateur est un médecin et si l'objet Doctor n'est pas null
         if (user.getRole() == UserRole.DOCTOR && user.getDoctor() != null) {
@@ -247,7 +252,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
         dto.setUserId(user.getUserId());
         dto.setEmail(user.getEmail());
         dto.setStatus(user.getStatus());
-        dto.setCreationDate(user.getCreationDate());
+        dto.setDateOfRequest(user.getCreationDate());
 
         // Vérifie que l'utilisateur est un centre de santé et qu'il est associé
         if (user.getRole() == UserRole.HEALTH_CENTER && user.getHealthCenter() != null) {

@@ -1,6 +1,7 @@
 package com.example.rml.back_office_rml.repositories;
 
 import com.example.rml.back_office_rml.entities.Room;
+import com.example.rml.back_office_rml.enums.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     // Trouver toutes les salles d'un centre de santé
     List<Room> findByHealthCenter_CenterId(Long healthCenterId);
+
+    //Lister les salles par Statut
+    List <Room> findByStatus (RoomStatus status);
 }

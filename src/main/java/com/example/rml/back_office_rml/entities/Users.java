@@ -36,7 +36,7 @@ public class Users { // Classe Utilisateur
     @Enumerated(EnumType.STRING)
     private UserStatus status; // StatutUtilisateur
 
-    @CreationTimestamp
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(name = "date_creation", nullable = false, updatable = false)
     private LocalDateTime creationDate; // dateCreation

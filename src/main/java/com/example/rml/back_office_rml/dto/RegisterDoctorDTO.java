@@ -1,9 +1,11 @@
 package com.example.rml.back_office_rml.dto;
 
 import com.example.rml.back_office_rml.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,10 +14,14 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @Component
 public class RegisterDoctorDTO {
+
+
 
     // User information (REQUIRED for all)
     @NotBlank

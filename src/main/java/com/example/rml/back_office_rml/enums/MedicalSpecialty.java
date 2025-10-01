@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum MedicalSpecialty {
 
     GENERAL_MEDICINE("Médecine Générale"),
-    Cardiology("Cardiologie"),
+    CARDIOLOGY("Cardiologie"),
     DERMATOLOGY("Dermatologie"),
     PEDIATRICS("Pédiatrie"),
     GYNECOLOGY("Gynécologie"),
