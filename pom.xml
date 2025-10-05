@@ -75,6 +75,13 @@
 			<version>8.0.32</version>
 		</dependency>
 
+		<!-- H2 database for tests -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 			<!-- Lombok (ça nous permet d'ajouter les annotations pour get set et constructeur) -->
 			<dependency>
 				<groupId>org.projectlombok</groupId>
