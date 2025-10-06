@@ -2,7 +2,9 @@ package com.example.rml.back_office_rml.dto;
 
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -51,6 +53,8 @@ public class RegisterHealthCenterDTO {
     @Schema(hidden = true)
     private UserStatus status;
 
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime creationDate;
 
     // Lors du retour du DTO HealthCenter les fichiers ne sont pas affichés car les données en byte ne sont pas converties en Multipart. On utilise à la place des indicateurs de présence.

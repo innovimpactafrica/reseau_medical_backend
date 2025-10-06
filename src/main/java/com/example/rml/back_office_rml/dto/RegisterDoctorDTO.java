@@ -4,8 +4,8 @@ import com.example.rml.back_office_rml.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.rml.back_office_rml.enums.MedicalSpecialty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -58,6 +58,8 @@ public class RegisterDoctorDTO {
     @Schema(hidden = true)
     private UserStatus status;
 
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime creationDate;
 
 

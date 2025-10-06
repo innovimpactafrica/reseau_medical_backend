@@ -38,8 +38,9 @@ public class Users { // Classe Utilisateur
 
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @CreationTimestamp
     @Column(name = "date_creation", nullable = false, updatable = false)
-    private LocalDateTime creationDate; // dateCreation
+    private LocalDateTime creationDate;
 
     // Relations
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
