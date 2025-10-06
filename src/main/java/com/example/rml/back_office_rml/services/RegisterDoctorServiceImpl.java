@@ -81,6 +81,7 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
         response.setPassword(savedUser.getPassword());
         response.setSpecialty(savedDoctor.getSpecialty());
         response.setPhone(savedDoctor.getPhone());
+        response.setCreationDate(savedUser.getCreationDate());
         response.setHasPhoto(savedDoctor.getPhoto() != null);
         response.setHasDocuments(savedDoctor.getDocuments() != null);
         response.setStatus(savedUser.getStatus());

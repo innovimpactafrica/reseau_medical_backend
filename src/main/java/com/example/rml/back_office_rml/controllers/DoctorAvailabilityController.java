@@ -50,10 +50,8 @@ public class DoctorAvailabilityController {
 
             // CONFIGURATION DES CONSULTATIONS
             @Parameter(description = "Consultation duration ID", required = true)
-            @RequestParam Long consultationDuration_id,
+            @RequestParam Long consultationDuration_id
 
-            @Parameter(description = "Recurring (every week)")
-            @RequestParam(defaultValue = "true") Boolean isRecurring
     ) {
         try {
             // Conversion des heures de String vers LocalTime
@@ -68,7 +66,6 @@ public class DoctorAvailabilityController {
             dto.setStartTime(start);
             dto.setEndTime(end);
             dto.setConsultationDuration_Id(consultationDuration_id);
-            dto.setIsRecurring(isRecurring);
 
             // Appel du service pour créer la disponibilité
             DoctorAvailabilityDTO result = availabilityService.createAvailability(dto);
@@ -167,10 +164,9 @@ public class DoctorAvailabilityController {
             @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm") String endTime,
 
             @Parameter(description = "New consultation duration ID")
-            @RequestParam(required = false) Long consultationDurationId,
+            @RequestParam(required = false) Long consultationDurationId
 
-            @Parameter(description = "New recurring status")
-            @RequestParam(required = false) Boolean isRecurring
+
     ) {
         try {
             // Conversion des heures si fournies
@@ -184,8 +180,6 @@ public class DoctorAvailabilityController {
             if (start != null) dto.setStartTime(start);
             if (end != null) dto.setEndTime(end);
             if (consultationDurationId != null) dto.setConsultationDuration_Id(consultationDurationId);
-            if (isRecurring != null) dto.setIsRecurring(isRecurring);
-
             DoctorAvailabilityDTO result =
                     availabilityService.updateAvailability(availabilityId, dto);
             return ResponseEntity.ok(result);

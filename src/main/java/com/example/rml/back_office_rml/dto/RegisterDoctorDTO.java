@@ -58,6 +58,8 @@ public class RegisterDoctorDTO {
     @Schema(hidden = true)
     private UserStatus status;
 
+    private LocalDateTime creationDate;
+
 
     // File presence indicators
     private boolean hasPhoto = false;

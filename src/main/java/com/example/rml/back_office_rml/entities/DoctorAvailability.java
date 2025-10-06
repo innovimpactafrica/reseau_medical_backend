@@ -43,9 +43,6 @@ public class DoctorAvailability {
     private ConsultationDuration consultationDuration; // Référence à la durée
 
 
-    @Column(name = "is_recurring", nullable = false)
-    private Boolean isRecurring = true;   // true = toutes les semaines
-
     @Column(name = "active", nullable = false)
     private Boolean active = true;        // Pour désactiver temporairement
 

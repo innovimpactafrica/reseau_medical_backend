@@ -76,7 +76,6 @@ public class DoctorAvailabilityServiceImpl implements DoctorAvailabilityService 
         availability.setStartTime(dto.getStartTime());
         availability.setEndTime(dto.getEndTime());
         availability.setConsultationDuration(consultationDuration);
-        availability.setIsRecurring(dto.getIsRecurring());
         availability.setActive(true);
 
         DoctorAvailability savedAvailability = doctorAvailabilityRepository.save(availability);
@@ -128,7 +127,6 @@ public class DoctorAvailabilityServiceImpl implements DoctorAvailabilityService 
         existing.setStartTime(dto.getStartTime());
         existing.setEndTime(dto.getEndTime());
         existing.setConsultationDuration(newConsultationDuration);
-        existing.setIsRecurring(dto.getIsRecurring());
 
         DoctorAvailability updated = doctorAvailabilityRepository.save(existing);
         return convertToDTO(updated);
@@ -213,7 +211,6 @@ public class DoctorAvailabilityServiceImpl implements DoctorAvailabilityService 
         dto.setStartTime(availability.getStartTime());
         dto.setEndTime(availability.getEndTime());
         dto.setConsultationDurationMin(availability.getConsultationDuration().getDisplayName());
-        dto.setIsRecurring(availability.getIsRecurring());
         dto.setActive(availability.getActive());
         dto.setDoctorName(availability.getDoctor().getFirstName() + " " + availability.getDoctor().getLastName());
         dto.setHealthCenterName(availability.getHealthCenter().getName());

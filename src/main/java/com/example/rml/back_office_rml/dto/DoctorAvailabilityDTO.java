@@ -44,7 +44,6 @@ public class DoctorAvailabilityDTO {
     @NotNull(message = "Consultation duration is required")
     private String consultationDurationMin;
 
-    private Boolean isRecurring = true;
     private Boolean active = true;
 
     @JsonIgnore
