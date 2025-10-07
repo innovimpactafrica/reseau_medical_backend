@@ -14,6 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class DefaultTimeSlot {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long defaultTimeSlotId;
