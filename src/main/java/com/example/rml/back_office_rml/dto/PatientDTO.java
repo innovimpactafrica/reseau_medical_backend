@@ -1,5 +1,7 @@
 package com.example.rml.back_office_rml.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -26,7 +28,12 @@ public class PatientDTO {
     private String email;
 
     private String address;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
+
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedAt;
     private Long patientId;
 }
