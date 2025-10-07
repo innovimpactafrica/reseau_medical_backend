@@ -37,6 +37,7 @@ public class SlotDTO {
     @JsonFormat(pattern = "HH:mm")
     private LocalTime endTime;
 
+
     private SlotStatus status;
 
     // FALSE = créneau ponctuel (une seule date)

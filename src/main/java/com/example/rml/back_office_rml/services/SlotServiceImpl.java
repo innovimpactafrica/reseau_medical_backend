@@ -132,7 +132,7 @@ public class SlotServiceImpl implements SlotService {
             }
         }
 
-        // ✅ CRÉATION du slot
+        // CRÉATION du slot
         Slot slot = new Slot();
         slot.setSlotDate(dto.getSlotDate());
         slot.setDayOfWeek(dayOfWeek);

@@ -44,7 +44,7 @@ public class RegisterDoctorDTO {
     @NotNull(message = "La spécialité est obligatoire")
     private MedicalSpecialty specialty; // specialite
 
-    @NotBlank(message = "Le téléphone est obligatoire")
+    @NotBlank(message = "Le numéro de téléphone est obligatoire")
     @Size(max = 15, message = "Le téléphone ne peut dépasser 15 caractères")
     private String phone; // telephone
 
