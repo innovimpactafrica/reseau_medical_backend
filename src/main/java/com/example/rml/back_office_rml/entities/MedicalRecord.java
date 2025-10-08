@@ -1,6 +1,10 @@
 package com.example.rml.back_office_rml.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +19,9 @@ import java.util.List;
  * - Ordonnances
  * - Dossiers partagés avec d'autres médecins
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "medical_records")
 public class MedicalRecord {
@@ -100,6 +107,7 @@ public class MedicalRecord {
      */
     @PreUpdate
     protected void onUpdate() {
+
         updatedAt = LocalDateTime.now();
     }
 

@@ -34,13 +34,6 @@ public class HealthCenter {
     @Column(unique = true, name = "telephone_contact")
     private String contactPhone; // téléphone de contact
 
-    @Lob
-    @Column(name = "logo", columnDefinition = "LONGBLOB")
-    private byte[] logo; // Logo du centre
-
-    @Lob
-    @Column(name = "justificatifs", columnDefinition = "LONGBLOB")
-    private byte[] documents; // documents justificatifs
 
     // GETTER pour le frontend (sans le mot de passe)
     public String getPassword() {

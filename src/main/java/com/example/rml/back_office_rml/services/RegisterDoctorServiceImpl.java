@@ -62,13 +62,6 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
         doctor.setSpecialty(dto.getSpecialty());
         doctor.setPhone(dto.getPhone());
 
-        // Gestion des fichiers
-        if (dto.getPhoto() != null && !dto.getPhoto().isEmpty()) {
-            doctor.setPhoto(dto.getPhoto().getBytes());
-        }
-        if (dto.getDocuments() != null && !dto.getDocuments().isEmpty()) {
-            doctor.setDocuments(dto.getDocuments().getBytes());
-        }
 
         Doctor savedDoctor = doctorRepository.save(doctor);
 
@@ -82,8 +75,6 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
         response.setSpecialty(savedDoctor.getSpecialty());
         response.setPhone(savedDoctor.getPhone());
         response.setCreationDate(savedUser.getCreationDate());
-        response.setHasPhoto(savedDoctor.getPhoto() != null);
-        response.setHasDocuments(savedDoctor.getDocuments() != null);
         response.setStatus(savedUser.getStatus());
         return response;
     }
@@ -105,8 +96,7 @@ public class RegisterDoctorServiceImpl implements RegisterDoctorService {
         dto.setSpecialty(doctor.getSpecialty());
         dto.setEmail(doctor.getUser().getEmail());
         dto.setPhone(doctor.getPhone());
-        dto.setHasPhoto(doctor.getPhoto() != null);
-        dto.setHasDocuments(doctor.getDocuments() != null);
+
         dto.setDateOfRequest(doctor.getUser().getCreationDate());
         dto.setStatus(doctor.getUser().getStatus());
         return dto;

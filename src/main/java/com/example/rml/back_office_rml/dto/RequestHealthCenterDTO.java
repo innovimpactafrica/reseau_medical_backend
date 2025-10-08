@@ -25,7 +25,6 @@ public class RequestHealthCenterDTO {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateOfRequest; // dateCreation
 
-    private boolean hasLogo; // Indique si le centre a un logo enregistré
-    private boolean hasCenterDocuments; // Indique si des documents sont associés au centre
+
 
 }

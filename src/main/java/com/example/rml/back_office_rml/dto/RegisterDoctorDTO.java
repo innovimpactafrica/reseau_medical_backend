@@ -48,12 +48,6 @@ public class RegisterDoctorDTO {
     @Size(max = 15, message = "Le téléphone ne peut dépasser 15 caractères")
     private String phone; // telephone
 
-    // Lors du retour du DTO Doctor, les fichiers ne sont pas affichés car les données en byte ne sont pas converties en Multipart. On utilise à la place des indicateurs de présence.
-    @JsonIgnore
-    private MultipartFile photo;
-
-    @JsonIgnore
-    private MultipartFile documents; // justificatifs
 
     @Schema(hidden = true)
     private UserStatus status;
@@ -63,8 +57,6 @@ public class RegisterDoctorDTO {
     private LocalDateTime creationDate;
 
 
-    // File presence indicators
-    private boolean hasPhoto = false;
-    private boolean hasDocuments = false;
+
 
 }

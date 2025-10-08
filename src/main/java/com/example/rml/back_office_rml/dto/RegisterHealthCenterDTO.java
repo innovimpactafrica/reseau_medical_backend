@@ -57,16 +57,7 @@ public class RegisterHealthCenterDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime creationDate;
 
-    // Lors du retour du DTO HealthCenter les fichiers ne sont pas affichés car les données en byte ne sont pas converties en Multipart. On utilise à la place des indicateurs de présence.
-    @JsonIgnore
-    private MultipartFile logo;
 
-    @JsonIgnore
-    private MultipartFile documents; // justificatifs
-
-    // File presence indicators
-    private boolean hasLogo = false;
-    private boolean hasDocuments = false;
 
 
 }

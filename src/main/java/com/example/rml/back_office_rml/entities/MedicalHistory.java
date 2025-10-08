@@ -2,6 +2,9 @@ package com.example.rml.back_office_rml.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +12,9 @@ import java.time.LocalDateTime;
 
 //Historique des maladies et interventions du patient
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Table(name = "medical_histories")
 public class MedicalHistory {
 
@@ -21,7 +27,7 @@ public class MedicalHistory {
     private MedicalRecord medicalRecord; // relation avec le dossier Médical
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDate date = LocalDate.now();
 
     @Column(name = "diagnosis")
     private String diagnosis; //le diagnostic médical principal pour cet antécédent (ex: grippe, fracture, diabète).

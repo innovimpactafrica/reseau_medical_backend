@@ -203,8 +203,6 @@ public class RequestContainerServiceImpl implements RequestContainerService {
             dto.setFirstName(doctor.getFirstName());
             dto.setSpecialty(doctor.getSpecialty());
             dto.setPhone(doctor.getPhone());
-            dto.setHasPhoto(doctor.getPhoto() != null);
-            dto.setHasDocuments(doctor.getDocuments() != null);
         }
 
         // Vérifie si l'utilisateur est un centre de santé et si l'objet HealthCenter n'est pas null
@@ -216,8 +214,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
             dto.setOpeningHours(center.getOpeningHours());
             dto.setContactPerson(center.getContactPerson());
             dto.setContactPhone(center.getContactPhone());
-            dto.setHasLogo(center.getLogo() != null);
-            dto.setHasCenterDocuments(center.getDocuments() != null);
+
         }
 
         return dto;
@@ -240,8 +237,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
             dto.setFirstName(doctor.getFirstName());
             dto.setSpecialty(doctor.getSpecialty());
             dto.setPhone(doctor.getPhone());
-            dto.setHasPhoto(doctor.getPhoto() != null);
-            dto.setHasDocuments(doctor.getDocuments() != null);
+
         }
         return dto;
     }
@@ -263,8 +259,7 @@ public class RequestContainerServiceImpl implements RequestContainerService {
             dto.setOpeningHours(center.getOpeningHours());
             dto.setContactPerson(center.getContactPerson());
             dto.setContactPhone(center.getContactPhone());
-            dto.setHasLogo(center.getLogo() != null);
-            dto.setHasCenterDocuments(center.getDocuments() != null);
+
         }
 
         return dto;
