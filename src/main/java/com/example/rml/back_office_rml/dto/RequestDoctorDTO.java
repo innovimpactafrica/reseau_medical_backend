@@ -3,7 +3,6 @@ package com.example.rml.back_office_rml.dto;
 import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.UserStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,6 +26,5 @@ public class RequestDoctorDTO {
 
     private MedicalSpecialty specialty; // Spécialité médicale
     private String phone;               // Numéro de téléphone
-    private boolean hasPhoto;           // Indique si une photo est disponible
-    private boolean hasDocuments;       // Indique si des documents sont disponibles
+
 }

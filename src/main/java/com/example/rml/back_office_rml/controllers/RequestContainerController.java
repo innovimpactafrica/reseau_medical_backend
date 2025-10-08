@@ -5,17 +5,18 @@ import com.example.rml.back_office_rml.dto.*;
 import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.UserRole;
 import com.example.rml.back_office_rml.enums.UserStatus;
-import com.example.rml.back_office_rml.services.RegisterDoctorService;
-import com.example.rml.back_office_rml.services.RegisterHealthCenterService;
-import com.example.rml.back_office_rml.services.RequestContainerService;
+import com.example.rml.back_office_rml.services.*;
+import com.example.rml.back_office_rml.util.FileTransferUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,11 +27,15 @@ public class RequestContainerController {
     private final RequestContainerService requestContainerService;
     private final RegisterDoctorService registerDoctorService;
     private final RegisterHealthCenterService registerHealthCenterService;
+    private final DoctorDocumentService doctorDocumentService;
+    private final HealthCenterDocumentService healthCenterDocumentService;
 
-    public RequestContainerController (RequestContainerService requestContainerService , RegisterDoctorService registerDoctorService , RegisterHealthCenterService registerHealthCenterService ) {
+    public RequestContainerController (RequestContainerService requestContainerService , RegisterDoctorService registerDoctorService , RegisterHealthCenterService registerHealthCenterService, DoctorDocumentService doctorDocumentService , HealthCenterDocumentService healthCenterDocumentService) {
         this.requestContainerService =requestContainerService;
         this.registerDoctorService = registerDoctorService;
         this.registerHealthCenterService= registerHealthCenterService;
+        this.doctorDocumentService = doctorDocumentService;
+        this.healthCenterDocumentService = healthCenterDocumentService;
     }
 
     /**
@@ -231,9 +236,6 @@ public class RequestContainerController {
             dto.setFirstName(firstName);
             dto.setSpecialty(specialty);
             dto.setPhone(phone);
-            dto.setPhoto(photo);
-            dto.setDocuments(documents);
-
             RegisterDoctorDTO result = registerDoctorService.createDoctorUser(dto);
             return ResponseEntity.ok(result);
 
@@ -299,8 +301,6 @@ public class RequestContainerController {
             dto.setPassword(password);
             dto.setReferentName(contactPerson);
             dto.setReferentPhone(contactPhone);
-            dto.setLogo(logo);
-            dto.setDocuments(documents);
 
 
             // Call the service
@@ -312,6 +312,137 @@ public class RequestContainerController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Ajoute les fichiers justificatifs et la photo d’un médecin.
+     *
+     * Étapes :
+     * 1. L’utilisateur envoie une photo + des documents
+     * 2. Les fichiers sont uploadés via FileTransferUtil
+     * 3. On enregistre les URLs dans DoctorDocument
+     */
+    @Operation(summary = "Add doctor documents", description = "Upload photo and supporting documents for a doctor")
+    @PostMapping(value = "/doctor-documents", consumes = "multipart/form-data")
+    public ResponseEntity<?> addDoctorDocuments(
+            @Parameter(description = "Doctor ID", required = true)
+            @RequestParam Long doctorId,
+
+            @Parameter(description = "Photo of the doctor")
+            @RequestParam(required = false) MultipartFile photo,
+
+            @Parameter(description = "Supporting documents (PDF, images, etc.)")
+            @RequestParam(required = false) List<MultipartFile> documents) {
+
+        try {
+            DoctorDocumentDTO dto = new DoctorDocumentDTO();
+            dto.setDoctorId(doctorId);
+
+            // Upload de la photo si présente
+            if (photo != null && !photo.isEmpty()) {
+                String photoUrl = FileTransferUtil.handleFileUpload(photo);
+                dto.setPhoto(photoUrl);
+            }
+
+            // Upload des documents (plusieurs fichiers possibles)
+            if (documents != null && !documents.isEmpty()) {
+                for (MultipartFile file : documents) {
+                    if (file.isEmpty()) {
+                        return ResponseEntity.badRequest()
+                                .body("One of the files is empty");
+                    }
+                }
+                List<String> documentUrls = FileTransferUtil.uploadPictures(documents);
+                dto.setDocumentUrl(String.join(",", documentUrls));
+            }
+
+            // Appel du service pour sauvegarder
+            DoctorDocumentDTO saved = doctorDocumentService.addDoctorDocument(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Upload failed: " + e.getMessage());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal error: " + e.getMessage());
+        }
+    }
+
+
+    //  Récupérer tous les documents d’un médecin
+    @Operation(summary = "Get doctor's documents", description = "Retrieve all uploaded documents for a doctor")
+    @GetMapping("/doctor-documents/{doctorId}")
+    public ResponseEntity<?> getDoctorDocuments(@PathVariable Long doctorId) {
+        List<DoctorDocumentDTO> documents = doctorDocumentService.getDocumentsByDoctor(doctorId);
+        return ResponseEntity.ok(documents);
+    }
+
+    // Ajouter des documents pour un centre de santé
+    @Operation(
+            summary = "Add documents to a health center",
+            description = "Upload a logo (single file) and multiple supporting documents (PDF, images) for a health center"
+    )
+    @PostMapping(value = "/health-center-documents", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> addDocuments(
+            @RequestParam Long centerId,
+            @RequestParam(required = false) MultipartFile logo,
+            @RequestParam(required = false) List<MultipartFile> documents) {
+
+        try {
+            HealthCenterDocumentDTO dto = new HealthCenterDocumentDTO();
+            dto.setCenterId(centerId);
+
+            // Upload du logo si fourni
+            if (logo != null && !logo.isEmpty()) {
+                String logoUrl = FileTransferUtil.handleFileUpload(logo);
+                dto.setLogoUrl(logoUrl);
+            }
+
+            // Upload des documents justificatifs (plusieurs fichiers possibles)
+            if (documents != null && !documents.isEmpty()) {
+                // Vérifie que chaque fichier n'est pas vide
+                for (MultipartFile file : documents) {
+                    if (file.isEmpty()) {
+                        return ResponseEntity.badRequest()
+                                .body("One of the files is empty");
+                    }
+                }
+
+                List<String> documentUrls = FileTransferUtil.uploadPictures(documents);
+                // Convertit la liste en chaîne séparée par des virgules
+                dto.setDocumentUrl(String.join(",", documentUrls));
+            }
+
+            HealthCenterDocumentDTO saved = healthCenterDocumentService.addHealthCenterDocument(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Upload failed: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Internal error: " + e.getMessage());
+        }
+    }
+
+    // Récupérer tous les documents d'un centre
+    @Operation(
+            summary = "Get all documents of a health center",
+            description = "Retrieve the logo and all supporting documents (PDF, images) uploaded for a specific health center by its ID"
+    )
+    @GetMapping("/health-center-documents/{centerId}")
+    public ResponseEntity<List<HealthCenterDocumentDTO>> getDocuments(@PathVariable Long centerId) {
+        List<HealthCenterDocumentDTO> documents = healthCenterDocumentService.getDocumentsByHealthCenter(centerId);
+        return ResponseEntity.ok(documents);
     }
 
 }

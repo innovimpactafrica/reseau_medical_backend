@@ -2,13 +2,20 @@ package com.example.rml.back_office_rml.entities;
 
 import com.example.rml.back_office_rml.enums.ExaminationType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 //Examens, analyses, résultats.
 @Entity
 @Table(name = "examinations")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Examination {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +24,6 @@ public class Examination {
     @ManyToOne
     @JoinColumn(name = "record_id")
     private MedicalRecord medicalRecord;//plusieurs examens peuvent appartenir au même dossier médical
-
-
 
     @ManyToOne
     @JoinColumn(name = "doctor_id")
@@ -41,7 +46,7 @@ public class Examination {
     private String notes;          // Commentaires/observations du médecin
 
     @Column(name = "file_path")
-    private String filePath;       // Chemin vers le fichier (PDF, image)
+    private List <String> resultFiles;       // Chemin vers le fichier (PDF, image)
 
     // ===========================================================
     //Dates de création et mise à jour du dossier

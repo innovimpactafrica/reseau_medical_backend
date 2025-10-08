@@ -22,9 +22,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class Room {
 
-    // Identifiant unique de la salle
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incrémenté par la base
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
     private Long roomId;
 

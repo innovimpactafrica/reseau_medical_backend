@@ -56,12 +56,6 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
         healthCenter.setContactPerson(registerHealthCenterDTO.getReferentName());
         healthCenter.setContactPhone(registerHealthCenterDTO.getReferentPhone());
 
-        if (registerHealthCenterDTO.getLogo() != null && !registerHealthCenterDTO.getLogo().isEmpty()) {
-            healthCenter.setLogo(registerHealthCenterDTO.getLogo().getBytes());
-        }
-        if (registerHealthCenterDTO.getDocuments() != null && !registerHealthCenterDTO.getDocuments().isEmpty()) {
-            healthCenter.setDocuments(registerHealthCenterDTO.getDocuments().getBytes());
-        }
 
         HealthCenter savedHealthCenter = healthCenterRepository.save(healthCenter);
 
@@ -75,8 +69,6 @@ public class RegisterHealthCenterServiceImpl implements RegisterHealthCenterServ
         response.setEmail(savedUser.getEmail());
         response.setPassword(savedUser.getPassword());
         response.setRole(savedUser.getRole());
-        response.setHasLogo(savedHealthCenter.getLogo() != null);
-        response.setHasDocuments(savedHealthCenter.getDocuments() != null);
         response.setStatus(savedUser.getStatus());
 
 

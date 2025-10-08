@@ -2,10 +2,16 @@ package com.example.rml.back_office_rml.entities;
 
 import com.example.rml.back_office_rml.enums.FamilyRelation;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 //Maladies héréditaires dans la famille.
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "family_histories")
 public class FamilyHistory {
