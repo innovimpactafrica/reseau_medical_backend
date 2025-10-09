@@ -1,7 +1,13 @@
 package com.example.rml.back_office_rml.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "prescription_items")
 public class PrescriptionItem {

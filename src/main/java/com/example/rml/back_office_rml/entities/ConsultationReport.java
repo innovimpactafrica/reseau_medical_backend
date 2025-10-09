@@ -2,6 +2,9 @@ package com.example.rml.back_office_rml.entities;
 
 import com.example.rml.back_office_rml.enums.ReportType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +12,9 @@ import java.time.LocalDateTime;
 
 //Compte rendu de consultation (texte, audio, vidéo).
 @Entity
+@Data
+@AllArgsConstructor
+ @NoArgsConstructor
 @Table(name = "consultation_reports")
 public class ConsultationReport {
     @Id
