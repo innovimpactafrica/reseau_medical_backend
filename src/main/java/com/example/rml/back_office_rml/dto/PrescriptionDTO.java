@@ -1,5 +1,6 @@
 package com.example.rml.back_office_rml.dto;
 
+import com.example.rml.back_office_rml.enums.MedicalSpecialty;
 import com.example.rml.back_office_rml.enums.PrescriptionStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,28 +21,21 @@ import java.util.List;
 @AllArgsConstructor
 public class PrescriptionDTO {
 
-    // ID de l'ordonnance (auto-généré)
-    private Long id;
 
-    // ID du dossier médical associé (obligatoire)
-    @NotNull(message = "L'ID du dossier médical est obligatoire")
-    private Long recordId;
 
-    // ID du médecin prescripteur (obligatoire)
-    @NotNull(message = "L'ID du médecin est obligatoire")
-    private Long doctorId;
-
-    // ID du rendez-vous associé (facultatif)
-    private Long appointmentId;
+    // Numéro unique de l'ordonnance (généré automatiquement)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String prescriptionNumber;
 
     // Date de prescription (obligatoire)
     @NotNull(message = "La date de prescription est obligatoire")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate prescriptionDate;
 
-    // Numéro unique de l'ordonnance (généré automatiquement)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String prescriptionNumber;
+    // Date de validité de l'ordonnance
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate validUntil;
+
 
     // Liste des médicaments prescrits
     private List<PrescriptionItemDTO> items = new ArrayList<>();
@@ -50,11 +44,9 @@ public class PrescriptionDTO {
     private String instructions;
 
     // Statut de l'ordonnance
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private PrescriptionStatus status;
 
-    // Date de validité de l'ordonnance
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate validUntil;
 
     // Informations du médecin (pour affichage)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -64,7 +56,7 @@ public class PrescriptionDTO {
     private String doctorLastName;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String doctorSpecialty;
+    private MedicalSpecialty doctorSpecialty;
 
     // Informations du patient (pour affichage)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -81,4 +73,18 @@ public class PrescriptionDTO {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedAt;
+
+    // ID de l'ordonnance (auto-généré)
+    private Long id;
+
+    // ID du dossier médical associé (obligatoire)
+    @NotNull(message = "L'ID du dossier médical est obligatoire")
+    private Long recordId;
+
+    // ID du médecin prescripteur (obligatoire)
+    @NotNull(message = "L'ID du médecin est obligatoire")
+    private Long doctorId;
+
+    // ID du rendez-vous associé (facultatif)
+    private Long appointmentId;
 }
